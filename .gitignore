@@ -1,0 +1,23 @@
+# build
+**/server/server
+**/client/client
+*.o
+*.a
+*.exe
+__pycache__/
+*.pyc
+*.pyo
+
+# uploads & local runs
+server/uploads/*
+!server/uploads/.gitkeep
+results/*.log
+results/demo_*.txt
+!results/.gitkeep
+!results/smoke_diagnose.txt
+!results/smoke_server.log
+
+# reports (large; keep generators)
+docs/reports/*.docx
+docs/reports/*.zip
+docs/reports/ascii/
