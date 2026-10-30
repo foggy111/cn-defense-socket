@@ -1,0 +1,18 @@
+[2026-10-28 17:00:01] server listening 0.0.0.0:9000
+[2026-10-28 17:00:01] uploads dir=uploads
+[2026-10-28 17:00:05] accept 127.0.0.1:45122 fd=5
+[2026-10-28 17:00:06] recv type=NICK len=5 fd=5
+[2026-10-28 17:00:06] nick set fd=5 nick=Alice
+[2026-10-28 17:00:08] accept 127.0.0.1:45123 fd=6
+[2026-10-28 17:00:09] recv type=NICK len=3 fd=6
+[2026-10-28 17:00:09] nick set fd=6 nick=Bob
+[2026-10-28 17:00:12] recv type=CHAT len=11 fd=5
+[2026-10-28 17:00:12] CHAT from=Alice msg=hello Bob!
+[2026-10-28 17:00:15] recv type=CHAT len=4 fd=6
+[2026-10-28 17:00:15] CHAT from=Bob msg=hi~
+[2026-10-28 17:00:20] recv type=FILE_META len=18 fd=5
+[2026-10-28 17:00:20] FILE_META upload to server from=Alice file=demo.txt size=12
+[2026-10-28 17:00:20] FILE_CHUNK from=Alice +12 total=12/12
+[2026-10-28 17:00:20] FILE_END from=Alice file=demo.txt received=12
+[2026-10-28 17:00:30] client leave nick=Bob fd=6
+[2026-10-28 17:00:31] client leave nick=Alice fd=5
