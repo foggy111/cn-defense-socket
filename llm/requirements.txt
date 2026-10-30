@@ -1,0 +1,2 @@
+# 本模块仅使用 Python3 标准库（urllib/json），无需第三方依赖。
+# 若将来扩展 langchain 等，可在此声明。
