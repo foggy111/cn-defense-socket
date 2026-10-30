@@ -1,0 +1,20 @@
+[2026-10-28 18:05:47] server listening 0.0.0.0:9000
+[2026-10-28 18:05:47] uploads dir=uploads
+[2026-10-28 18:05:47] accept 127.0.0.1:35598 fd=5
+[2026-10-28 18:05:47] accept 127.0.0.1:35614 fd=6
+[2026-10-28 18:05:47] recv type=NICK len=5 fd=5
+[2026-10-28 18:05:47] recv type=NICK len=3 fd=6
+[2026-10-28 18:05:47] nick set fd=6 nick=Bob
+[2026-10-28 18:05:47] nick set fd=5 nick=Alice
+[2026-10-28 18:05:47] recv type=CHAT len=16 fd=5
+[2026-10-28 18:05:47] CHAT from=Alice msg=hello from smoke
+[2026-10-28 18:05:48] recv type=FILE_META len=14 fd=5
+[2026-10-28 18:05:48] FILE_META upload to server from=Alice file=smoke.txt size=16
+[2026-10-28 18:05:48] recv type=FILE_CHUNK len=16 fd=5
+[2026-10-28 18:05:48] FILE_CHUNK from=Alice +16 total=16/16
+[2026-10-28 18:05:48] recv type=FILE_END len=2 fd=5
+[2026-10-28 18:05:48] FILE_END from=Alice file=smoke.txt received=16
+[2026-10-28 18:05:48] client leave nick=Bob fd=6
+[2026-10-28 18:05:48] broadcast send fail fd=5
+[2026-10-28 18:05:48] client leave nick=Alice fd=5
+[2026-10-28 18:05:48] server shutting down

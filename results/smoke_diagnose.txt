@@ -1,0 +1,40 @@
+=== diagnose mode=mock file=/workspace/cn-defense-socket/results/smoke_server.log ===
+【Mock 模式诊断报告】（未配置 OPENAI_API_KEY，或指定 --mock）
+日志文件: /workspace/cn-defense-socket/results/smoke_server.log
+日志行数: 20
+
+## 1) 现象摘要
+基于规则引擎对日志关键字的匹配结果如下。此模式用于答辩演示与离线验收，
+真实部署时可配置 OpenAI 兼容 API 获得自然语言深度分析。
+
+## 2) 可能的 TCP/协议问题与观察
+- 检测到服务器成功 bind/listen，TCP 被动打开完成，进入并发 accept 阶段。
+- 存在客户端三次握手成功后的 accept 记录，说明传输层连接已建立。
+- 出现昵称注册（NICK），应用层会话身份已绑定到 TCP 连接（fd）。
+- 出现 CHAT 帧，对应应用层广播：服务器读入后向其他已连接 socket 写出。
+- 出现 FILE_META：文件传输控制面启动，随后应有 FILE_CHUNK / FILE_END。
+- 出现 FILE_CHUNK：注意粘包/半包由 length-prefixed 帧边界解决，而非依赖 TCP 消息边界。
+- 日志含失败/非法提示，需核对帧 magic/version、payload 长度与业务字段分隔符（\t）。
+- 存在连接关闭：检查是否为对端 close、进程退出或中间设备 RST。
+
+## 3) 与本项目协议的对应
+- 帧格式: magic(CN) | version(1) | type(u8) | length(u32 BE) | payload
+- CHAT 广播依赖服务器维护的 fd→nick 映射表
+- 文件: FILE_META → 多个 FILE_CHUNK → FILE_END；目标为 * 时落盘 server/uploads/
+- length-prefixed 用于在字节流上恢复消息边界（解决 TCP 粘包/半包）
+
+## 4) 建议排查步骤
+1. 确认服务器日志有 `listening 0.0.0.0:9000`
+2. 客户端先 `/nick` 再聊天或发文件
+3. 对照 PROTOCOL.md 检查载荷字段顺序与分隔符
+4. 用 `ss -lntp | grep 9000` 确认监听；用抓包观察帧头 magic
+5. 大文件传输时关注 CHUNK 大小与磁盘权限（uploads/）
+
+## 5) 答辩知识点提示
+- TCP 三次握手 / 四次挥手与 socket API（socket/bind/listen/accept/connect）映射
+- 字节序：htonl/ntohl 保证跨主机 length 一致
+- 并发：thread-per-client + mutex 保护共享客户端表
+- 应用层协议设计：类型枚举、版本号、最大帧长防 DoS
+
+（若设置 OPENAI_API_KEY，可去掉 --mock 获得大模型完整分析。）
+
